@@ -18,8 +18,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         } elseif ($user->usertype === 'patient') {
             return redirect()->route('patient.dashboard');
-        } elseif ($user->usertype === 'student') {
-            return redirect()->route('student.dashboard');
+        } elseif ($user->usertype === 'dentistrystudent') {
+            return redirect()->route('dentistrystudent.communityforum');
         } else {
             return redirect()->route('dashboard'); // Default fallback route if usertype is not recognized
         }
@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return $this->authenticated($request, Auth::user());
     }
     
     /**

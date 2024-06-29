@@ -18,10 +18,14 @@ class CheckUserType
      */
     public function handle(Request $request, Closure $next, $type)
     {
-        if (Auth::check() && Auth::user()->usertype == $type) {
-            return $next($request);
+        if (Auth::check()) {
+            // Check if the authenticated user's usertype matches the required type
+            if (Auth::user()->usertype === $type) {
+                return $next($request); // Allow the request to proceed
+            }
         }
-        
-        return redirect('/home'); // Redirect to home if usertype does not match
+
+        // Redirect to home route if usertype does not match or user is not authenticated
+        return redirect()->route('home'); // Add a flash message if needed
     }
 }

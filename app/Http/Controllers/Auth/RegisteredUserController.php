@@ -31,23 +31,36 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'usertype' => ['required', 'string', 'in:patient,dentistrystudent'], // Add validation for usertype
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'usertype' => ['required', 'string', 'in:patient,student'], // Add validation for usertype
         ]);
 
         $user = User::create([
+            'usertype' => $request->usertype, // Store usertype
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'usertype' => $request->usertype, // Store usertype
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Redirect based on usertype
+        switch ($user->usertype) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+                break;
+            case 'patient':
+                return redirect()->route('patient.dashboard');
+                break;
+            case 'dentistrystudent':
+                return redirect()->route('dentistrystudent.communityforum');
+                break;
+            default:
+                return redirect(RouteServiceProvider::HOME);
+        }
     }
 }

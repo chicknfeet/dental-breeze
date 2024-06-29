@@ -15,4 +15,9 @@
             </div>
         </div>
     </div>
+
+@section('title')
+    Dashboard
+@endsection
+
 </x-app-layout>

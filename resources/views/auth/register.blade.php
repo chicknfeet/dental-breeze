@@ -7,13 +7,13 @@
             <x-input-label for="usertype" :value="__('User Type')" />
             <select id="usertype" name="usertype" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                 <option value="patient">{{ __('Patient') }}</option>
-                <option value="student">{{ __('Student') }}</option>
+                <option value="dentistrystudent">{{ __('Dentistry Student') }}</option>
             </select>
             <x-input-error :messages="$errors->get('usertype')" class="mt-2" />
         </div>
 
         <!-- Name -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
